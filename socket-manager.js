@@ -75,7 +75,6 @@ class SocketManager {
   }
 
   broadcast(data) {
-    console.log("broadcast");
       for(var i = 0;i < this.clients.length;i++) {
           this.clients[i].connection.sendUTF(JSON.stringify(data));
       };

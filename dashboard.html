@@ -19,9 +19,9 @@
         var tweet = JSON.parse(response.data).tweet;
         console.log(tweet);
 
-        //tweet.text && $('#tweets').append(tweet.text + '<br />');
+        tweet.text && $('#tweets').append(tweet.text + '<br />');
 
-        //$('#tweets').linkify();
+        $('#tweets').linkify();
     }
 </script>
 </html>
