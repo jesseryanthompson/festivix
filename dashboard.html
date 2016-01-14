@@ -9,7 +9,7 @@
 <script src="linkify-jquery.js"></script>
 
 <script>
-    var socket = new WebSocket('ws://127.0.0.1:1337');
+    var socket = new WebSocket('ws://10.118.5.57:1337');
 
     socket.onopen = function() {
 
@@ -17,10 +17,11 @@
 
     socket.onmessage = function(response) {
         var tweet = JSON.parse(response.data).tweet;
+        console.log(tweet);
 
-        tweet.text && $('#tweets').append(tweet.text + '<br />');
+        //tweet.text && $('#tweets').append(tweet.text + '<br />');
 
-        $('#tweets').linkify();
+        //$('#tweets').linkify();
     }
 </script>
 </html>

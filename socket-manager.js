@@ -12,7 +12,7 @@ class SocketManager {
         httpServer: HTTP.createServer().listen(1337)
     });
 
-    this.server.on('request', this.onRequest);
+    this.server.on('request', this.onRequest.bind(this));
   }
 
   onRequest(request) {
@@ -33,8 +33,6 @@ class SocketManager {
         "id": newClient.id
       }
     }));
-
-    connection.on('message', handleMessage);
 
     connection.on('close', function(connection) {
         console.log('connection closed for client', id);
@@ -77,8 +75,9 @@ class SocketManager {
   }
 
   broadcast(data) {
-      for(var i = 0;i < clients.length;i++) {
-          clients[i].connection.sendUTF(JSON.stringify(data));
+    console.log("broadcast");
+      for(var i = 0;i < this.clients.length;i++) {
+          this.clients[i].connection.sendUTF(JSON.stringify(data));
       };
   }
 

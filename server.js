@@ -21,7 +21,7 @@ class Festivix {
             tweet: this.currentTweet
         });
 
-        console.log(this.currentTweet);
+        //console.log(this.currentTweet);
 
         this.lastTweet = this.currentTweet;
 
