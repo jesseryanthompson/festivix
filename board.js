@@ -17,7 +17,26 @@ board.on("ready", function() {
   var saw = new five.Relay({
     pin: 3
   });
-  saw.close();
+
+  setInterval(function() {
+    saw.open();
+    setTimeout(function() {
+      saw.close();
+    }, 500);
+  }, 1500);
+
+  var proximitySensor = new five.Proximity({
+    controller: "HCSR04",
+    pin: 7
+  });
+
+  proximitySensor.on("data", function() {
+    // console.log("inches: ", this.inches);
+    // console.log("cm: ", this.cm);
+    if (this.cm < 30) {
+      console.log('change in distance');
+    }
+  });
 
   this.repl.inject({
     led: led,
