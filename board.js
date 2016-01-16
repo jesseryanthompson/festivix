@@ -1,48 +1,58 @@
+'use strict';
 var five = require('johnny-five');
+var EventEmitter = require('events');
 
-var board = new five.Board();
+class Board {
+  constructor(options) {
+    var self = this;
 
-board.on("ready", function() {
+    this.board = new five.Board();
+    this.events = new EventEmitter();
 
-  // Options object with pin property
-  var led = new five.Led({
-    pin: 10
-  });
+    this.board.on("ready", function() {
+      self.saw = new five.Relay({
+        pin: 3
+      });
 
-  var fog = new five.Relay({
-    pin: 2
-  });
-  fog.close();
+      self.proximitySensor = new five.Proximity({
+        controller: "HCSR04",
+        pin: 7
+      });
 
-  var saw = new five.Relay({
-    pin: 3
-  });
+      self.proximitySensor.on("data", function() {
+        // console.log("inches: ", this.inches);
+        // console.log("cm: ", this.cm);
+        if (this.cm < 30) {
+          console.log('change in distance');
+        }
+      });
 
-  setInterval(function() {
-    saw.open();
-    setTimeout(function() {
-      saw.close();
-    }, 500);
-  }, 1500);
+      var led = new five.Led({
+        pin: 10
+      });
 
-  var proximitySensor = new five.Proximity({
-    controller: "HCSR04",
-    pin: 7
-  });
+      led.blink();
 
-  proximitySensor.on("data", function() {
-    // console.log("inches: ", this.inches);
-    // console.log("cm: ", this.cm);
-    if (this.cm < 30) {
-      console.log('change in distance');
+      self.saw.close();
+
+      /*this.repl.inject({
+        led: this.led,
+        saw: this.saw
+      });*/
+    });
+  }
+
+  toggleSaw(on) {
+    var self = this;
+
+    if (self.saw) {
+      self.saw.open();
+
+      setTimeout(function() {
+        self.saw.close();
+      }, 500);
     }
-  });
+  }
+}
 
-  this.repl.inject({
-    led: led,
-    saw: saw,
-    fog: fog
-  });
-
-  led.blink();
-});
+module.exports = Board;

@@ -16,7 +16,7 @@ class TweetCollector {
   track(str) {
     var self = this;
 
-    this.twitterClient.stream('statuses/filter', {track: 'hello'}, function(stream) {
+    this.twitterClient.stream('statuses/filter', {track: str}, function(stream) {
         stream.on('data', self.onTweetData.bind(self));
 
         stream.on('error', function(error) {
